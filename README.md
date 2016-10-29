@@ -1,2 +1,1 @@
-# coPiUS
-Peaks Using Sqlite
+    SMOkE     Stock MOnEy
