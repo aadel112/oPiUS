@@ -28,7 +28,7 @@ class oPiUS:
         self.curs.execute('''PRAGMA temp_store = 2''')
         self.curs.execute('''PRAGMA threads = 8''')
         # just need two columns for this
-        self.curs.execute('''CREATE TABLE store(start_time int, end_time int)''')
+        self.curs.execute('''CREATE TABLE store(jdayphour int, start_time int, end_time int)''')
 
         self.input_h = input_h
         self.in_delim = in_delim
@@ -38,7 +38,7 @@ class oPiUS:
         self.output_h = output_h
 
     def idx_tbl(self):
-        self.curs.execute('''CREATE index idx01 ON store(start_time, end_time)''')
+        self.curs.execute('''CREATE index idx01 ON store(jdayphour, start_time, end_time)''')
 
         self.curs.execute('''ANALYZE''')
 
@@ -59,32 +59,35 @@ class oPiUS:
                     self.set_min_max(cl)
                     data.append(cl)
 
-        self.curs.executemany('INSERT INTO store VALUES(?,?)', data)
+        self.curs.executemany('INSERT INTO store VALUES(?,?,?)', data)
         self.idx_tbl()
 
     def set_min_max(self, cl):
         if cl[1] < self.minimum or self.minimum == -1:
-            self.minimum = int(cl[0])
-        if cl[1] > self.maximum or self.maximum == -1:
-            self.maximum = int(cl[1])
+            self.minimum = int(cl[1])
+        if cl[2] > self.maximum or self.maximum == -1:
+            self.maximum = int(cl[2])
 
     def get_column_list(self, r):
         e1 = r[self.start_colno].strip()
         e2 = r[self.end_colno].strip()
         try:    
-            return [ int(e1), int(e2) ]
+            ie1 = int(e1)
+            ie2 = int(e2)
+            return [ int(ie1/3600), ie1, ie2 ]
         except Exception:
             self.curs.execute('''select strftime('%s', ?, 'localtime')''', (e1,))
             e1 = self.curs.fetchone()[0]
             self.curs.execute('''select strftime('%s', ?, 'localtime')''', (e2,))
             e2 = self.curs.fetchone()[0]
 
-            return [ e1, e2 ]
+            return [ int(e1/3600), e1, e2 ]
 
     def find_peaks(self):
 
         for i in range(self.minimum, self.maximum):
-            self.curs.execute('''select count(*) from store where start_time <= ? and end_time >= ?''', (i, i))
+            j = int(i/3600)
+            self.curs.execute('''select count(*) from store where jdayphour <= ? and start_time <= ? and end_time >= ?''', (j, i, i))
             cnt = self.curs.fetchone()[0]
             self.peaks[i] = cnt
 
