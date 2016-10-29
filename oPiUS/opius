@@ -4,7 +4,7 @@ import sqlite3
 import sys
 import csv
 
-class coPiUS:
+class oPiUS:
     conn = None
     curs = None
     input_h = None
@@ -138,11 +138,11 @@ def main():
 	if o == "--end_colno":
              ec = a
 
-    copius = coPiUS(in_h, ide, sc, ec, ot, o_h)
-    copius.load()
-    copius.find_peaks()
-    copius.output()
-    copius.close()
+    opius = oPiUS(in_h, ide, sc, ec, ot, o_h)
+    opius.load()
+    opius.find_peaks()
+    opius.output()
+    opius.close()
 
 
 if __name__ == "__main__":

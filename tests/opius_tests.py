@@ -1,5 +1,5 @@
 from nose.tools import *
-import copius
+import opius
 
 def setup():
     print "SETUP!"
