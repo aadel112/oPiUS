@@ -49,9 +49,17 @@ How to use this module in python
 
 Installation
 ============
+
 The best thing to do would be to clone the repository, and add a symlink called opius to /usr/local/bin pointing at oPiUS/opius.py
 
-``ln -s oPiUS/opius.py /usr/local/bin/opius``
+```
+$> git clone https://github.com/aadel112/oPiUS.git #clone
+$> cd oPiUS #get in project directory
+$> sudo su #become root, stay in same directory
+$> make all #install requirements, run tests
+$> ln -s oPiUS/opius.py /usr/local/bin/opius #create symlink
+$> exit #switch back to non-super user
+```
 
 Examples
 ========
@@ -80,3 +88,14 @@ $> ./oPiUS/opius.py --infile=examples/ex1 --output_delim='~'
 ```
 $> ./oPiUS/opius.py --infile=examples/ex1 --output_type=json
 ```
+
+Contributing
+============
+Find something you want to add or fix? Fix it, and I'll look it over as soon as posisble. Have any comments, or find any bugs? Please contact me or open an issue. Suggestions for improvement? Let them be known.
+
+Special Thanks
+==============
+Special thanks all contributors.
+
+* Empty
+
