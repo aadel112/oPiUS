@@ -1,6 +1,2 @@
 nose
 sphinx
-sqlite3
-csv
-sys
-getopt
