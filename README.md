@@ -16,13 +16,13 @@ How to use this module in shell
 1. You can either pipe input to it, which is the default, or you can set it up to take an input_file. The input file must be delimited. The default delimiter is ',', but you can set this to some other value using --input_delim=.
 
     Available options are:
-    --infile= - a file relative or absolute
-    --outfile= - a file realtive or absolute
-    --output_type= - csv or json
-    --input_delim= - , | ^ etc.
-    --output_delim= - , | ^ etc.
-    --start_colno= - the column of the start time of the event, indexed from 1 on
-    --end_colno= - the columm of the end time of the event, indexed from 1 on
+    * --infile= - a file relative or absolute
+    * --outfile= - a file realtive or absolute
+    * --output_type= - csv or json
+    * --input_delim= - , | ^ etc.
+    * --output_delim= - , | ^ etc.
+    * --start_colno= - the column of the start time of the event, indexed from 1 on
+    * --end_colno= - the columm of the end time of the event, indexed from 1 on
 
     The output step is one second. You will always get the concurrent count of records for each second from the record minimum start time to the record maximum end time. It's up to you, the developer to get less granular maxes from that.
 
@@ -30,22 +30,22 @@ How to use this module in python
 ===============================
 1. import it: ``import oPiUS``
 2. create an object:
-    ```python
+    ```
     opius = oPiUS(in_h, ide, ode, sc, ec, ot, o_h)
     ```
 3. call load, find_peaks, and close
-    ```python
+    ```
     opius.load()
     ``` 
     loads the sqlite memory structure
-    ```python
+    ```
     opius.find_peaks()
     ```
     get each peak into opius.peaks, a dict
-    ```python
+    ```
     opius.close()
     ```
-    closes the sqlite object, free the memory
+    closes the sqlite object, frees the memory
 
 Installation
 ============
@@ -58,6 +58,12 @@ Examples
 Here I have a csv with 4 columns, non-epoch formatted times, etc.
 
 ```
+$> cat examples/ex6
+dummy, person, 2016-10-31 00:00:00, 2016-10-31 00:00:10
+dummy, person2, 2016-10-31 00:00:01, 2016-10-31 00:00:11
+dummy, person3, 2016-10-31 00:00:10, 2016-10-31 00:00:10
+dummy, person4, 2016-10-31 00:00:09, 2016-10-31 00:00:11
+
 $> time opius --infile=examples/ex6 --start_colno=3 --end_col=4 | head -2
 1477872000,1
 1477872001,2
