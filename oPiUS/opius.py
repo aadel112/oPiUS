@@ -76,7 +76,9 @@ class oPiUS:
         - `in_delim`: the delimiter for the input stream
         - `out_delim`: the delimiter for the output stream, ignored if the output is not delimited
         - `start_colno`: the column number (1 based), of the event start time
-
+        - `end_colno`: the column number (1 based), of the event emd time
+        - `out_type`: the output format, csv or json
+        - `output_h`: output file, defaults to stdout
         """
         # init the in-memory data store
         self.conn = sqlite3.connect(':memory:')
@@ -107,6 +109,11 @@ class oPiUS:
 
     #load the database
     def load(self):
+        """
+        Loads the in memory store, indexes it, analyzes the index for query planning, and sets the max and min for looping in opius.maximum and opius.minimum
+        Parameters:
+        None
+        """
         data = []
         if self.input_h == sys.stdin:
             rd = csv.reader(sys.stdin, delimiter=self.in_delim)
@@ -153,13 +160,22 @@ class oPiUS:
             return [ e1, e2 ]
 
     def find_peaks(self):
-
+        """
+        Loops from opius.minimum - ipius.maximum, getting the concurrent event count at that instant in time, and storing this count im the value to the key of the times epoch in a dictionary. The times are represented as epochs on output because that is an easy format to create other formats from.
+        Parameters:
+        None
+        """
         for i in range(self.minimum, self.maximum+1):
             self.curs.execute('''select count(*) from store where start_time <= ? and end_time >= ?''', (i, i))
             cnt = self.curs.fetchone()[0]
             self.peaks[i] = cnt
 
     def output(self):
+        """
+        Outputs opius.peaks as either json or csv.
+        Parameters:
+        None
+        """
         if self.output_h == sys.stdout:
             if self.out_type == 'json':
                 print self.peaks
@@ -178,9 +194,19 @@ class oPiUS:
 
     # close out of db
     def close(self):
+        """
+        Closes the sqlite db connection
+        Parameters:
+        None
+        """
         self.conn.close()
 
 def main():
+    """
+    Reads the command line arguments, creates an opius objects, loads the input data, finds the peaks, and outputs
+    Parameters:
+    None
+    """
     try:
 	opts, args = getopt.getopt(sys.argv[1:], "", ["infile=", "outfile=", "output_type=", "input_delim=", "output_delim=", "start_colno=", "end_colno="])
     except getopt.GetoptError as err:
