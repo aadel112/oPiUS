@@ -2,7 +2,7 @@ from nose.tools import *
 from .context import oPiUS
 import sys
 
-#     opius = oPiUS(in_h, ide, sc, ec, ot, o_h)
+#     opius = oPiUS(in_h, ide, ode, sc, ec, ot, o_h)
 #     opius.load()
 #     opius.find_peaks()
 #     opius.output()

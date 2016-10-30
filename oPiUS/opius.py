@@ -9,13 +9,14 @@ class oPiUS:
     curs = None
     input_h = None
     in_delim = None
+    out_delim = None
     out_type = None
     output_h = None
     minimum = -1
     maximum = -1
     peaks = {}
 
-    def __init__(self, input_h = sys.stdin, in_delim=',', start_colno=1, end_colno=2, out_type='csv', output_h=sys.stdout):
+    def __init__(self, input_h = sys.stdin, in_delim=',', out_delim=',', start_colno=1, end_colno=2, out_type='csv', output_h=sys.stdout):
         # init the in-memory data store
         self.conn = sqlite3.connect(':memory:')
         self.curs = self.conn.cursor()
@@ -32,6 +33,7 @@ class oPiUS:
 
         self.input_h = input_h
         self.in_delim = in_delim
+        self.out_delim = out_delim
         self.start_colno = start_colno - 1
         self.end_colno = end_colno - 1
         self.out_type = out_type
@@ -71,7 +73,7 @@ class oPiUS:
     def get_column_list(self, r):
         e1 = r[self.start_colno].strip()
         e2 = r[self.end_colno].strip()
-        try:    
+        try:
             ie1 = int(e1)
             ie2 = int(e2)
             return [ ie1, ie2 ]
@@ -95,7 +97,7 @@ class oPiUS:
             if self.out_type == 'json':
                 print self.peaks
             elif self.out_type == 'csv':
-                wt = csv.writer(sys.stdout)
+                wt = csv.writer(sys.stdout,delimiter=self.out_delim)
                 for k in list(self.peaks.keys()):
                     wt.writerow([k,self.peaks[k]])
         else:
@@ -103,26 +105,27 @@ class oPiUS:
                 if self.out_type == 'json':
                     f.write(self.peaks)
                 elif self.out_type == 'csv':
-                    wt = csv.writer(f)
+                    wt = csv.writer(f,delimiter=self.out_delim)
                     for k in list(self.peaks.keys()):
                         wt.writerow([k,self.peaks[k]])
-            
+
     # close out of db
     def close(self):
         self.conn.close()
 
 def main():
     try:
-	opts, args = getopt.getopt(sys.argv[1:], "", ["infile=", "outfile=", "output_type=", "input_delim=", "start_colno=", "end_colno="])
+	opts, args = getopt.getopt(sys.argv[1:], "", ["infile=", "outfile=", "output_type=", "input_delim=", "output_delim=", "start_colno=", "end_colno="])
     except getopt.GetoptError as err:
 	# print help information and exit:
 	print str(err)  # will print something like "option -a not recognized"
 	sys.exit(2)
-    
+
     in_h = sys.stdin
     o_h = sys.stdout
     ot = 'csv'
     ide = ','
+    ode = ','
     sc = 1
     ec = 2
 #     print opts
@@ -135,12 +138,14 @@ def main():
 	     ot = a
 	if o == "--input_delim":
 	     ide = a
+        if o == "--output_delim":
+             ode = a
 	if o == "--start_colno":
 	     sc = a
 	if o == "--end_colno":
              ec = a
 
-    opius = oPiUS(in_h, ide, sc, ec, ot, o_h)
+    opius = oPiUS(in_h, ide, ode, sc, ec, ot, o_h)
     opius.load()
     opius.find_peaks()
     opius.output()
@@ -149,5 +154,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
+
 
