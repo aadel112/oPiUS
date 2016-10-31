@@ -1,14 +1,14 @@
-oPiUS (Peaks Using Sqlite)
+oPiUS (Peaks Using SQLite)
 ==========================
-Getting peak concurent event counts, a.k.a peak usage,
+Getting peak concurrent event counts, a.k.a peak usage,
 peak seats, etc. is a fairly common use case. Coming from an IVR-type background I see a large number of people who actually want to be billed this way.
 Getting peaks is easy, but getting accurate peaks, quickly is not. For even modest data sizes of ~50,000 records, getting a days worth of peaks really requires looping through each second of the day (86,400) seconds. As you can see this can spiral out of control quickly. The common quick-access data structure, the dictionary, or hash is really inefficient. You could have a solution that runs in hours or days. My purpose for writing this is multi-fold:
-    
+
 1. To provide an off-the-shelf calculator that is fast, accurate, and memory efficient.
-    
-2. To provide this solution in such a way that it reaches the maximum number of developers. This is why I chose python even though the perl solution to this I've written before seems faster. This is a pretty fast solution. I have to say, I've seen three different algorithms to solve this, and this is the fastest.
-    
-3. To illustrate an interesting concept, which is that sqlite can be used in memory as a drop-in replacement for a data structure. Prpoerly indexed, and setup, it can be lightning fast. It's especially useful for ranged index searches.
+
+2. To provide this solution in such a way that it reaches the maximum number of developers. This is why I chose python even though the Perl solution to this I've written before seems faster. This is a pretty fast solution. I have to say, I've seen three different algorithms to solve this, and this is the fastest.
+
+3. To illustrate an interesting concept, which is that SQLite can be used in memory as a drop-in replacement for a data structure. Properly indexed, and setup, it can be lightning fast. It's especially useful for ranged index searches.
 
 
 How to use this module in shell
@@ -17,12 +17,12 @@ How to use this module in shell
 
     Available options are:
     * --infile= - a file relative or absolute
-    * --outfile= - a file realtive or absolute
+    * --outfile= - a file relative or absolute
     * --output_type= - csv or json
     * --input_delim= - , | ^ etc.
     * --output_delim= - , | ^ etc.
     * --start_colno= - the column of the start time of the event, indexed from 1 on
-    * --end_colno= - the columm of the end time of the event, indexed from 1 on
+    * --end_colno= - the column of the end time of the event, indexed from 1 on
 
     The output step is one second. You will always get the concurrent count of records for each second from the record minimum start time to the record maximum end time. It's up to you, the developer to get less granular maxes from that.
 
@@ -36,7 +36,7 @@ How to use this module in python
 3. call load, find_peaks, and close
     ```
     opius.load()
-    ``` 
+    ```
     loads the sqlite memory structure
     ```
     opius.find_peaks()
@@ -50,7 +50,7 @@ How to use this module in python
 Installation
 ============
 
-The best thing to do would be to clone the repository, and add a symlink called opius to /usr/local/bin pointing at oPiUS/opius.py
+The best thing to do would be to clone the repository and add a symlink called opius to /usr/local/bin pointing at oPiUS/opius.py
 
 ```
 $> git clone https://github.com/aadel112/oPiUS.git #clone
@@ -63,7 +63,7 @@ $> exit #switch back to non-super user
 
 Examples
 ========
-Here I have a csv with 4 columns, non-epoch formatted times, etc.
+Here I have a CSV with 4 columns, non-epoch formatted times, etc.
 
 ```
 $> cat examples/ex6
@@ -91,11 +91,11 @@ $> ./oPiUS/opius.py --infile=examples/ex1 --output_type=json
 
 Contributing
 ============
-Find something you want to add or fix? Fix it, and I'll look it over as soon as posisble. Have any comments, or find any bugs? Please contact me or open an issue. Suggestions for improvement? Let them be known.
+Find something you want to add or fix? Fix it, and I'll look it over as soon as possible. Have any comments, or find any bugs? Please contact me or open an issue. Suggestions for improvement? Let them be known.
 
 Special Thanks
 ==============
-Special thanks all contributors.
+Special thanks, all contributors.
 
 * Empty
 
