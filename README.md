@@ -72,7 +72,7 @@ dummy, person2, 2016-10-31 00:00:01, 2016-10-31 00:00:11
 dummy, person3, 2016-10-31 00:00:10, 2016-10-31 00:00:10
 dummy, person4, 2016-10-31 00:00:09, 2016-10-31 00:00:11
 
-$> time opius --infile=examples/ex6 --start_colno=3 --end_col=4 | head -2
+$> time opius --infile=examples/ex6 --start_colno=3 --end_colno=4 | head -2
 1477872000,1
 1477872001,2
 
@@ -97,5 +97,4 @@ Special Thanks
 ==============
 Special thanks, all contributors.
 
-* Empty
-
+* @m3talstorm
