@@ -1,3 +1,7 @@
+What is oPiUS
+=============
+opius is all about fast peak calculations. Opius is a lightweight CLI that can also be imported as a python module to get exact peak concurrent event counts over a range of time. Opius has a small memory footprint, and a small code base. It's very good at one thing, finding counts over a time interval for records with a start and end-time where each record occurred at that instance in time, otherwise known as a peak calculation. It's very fast, as it relies on sqlite's in-memory datastore, with a single index on the start and end time of the event or record.  
+
 oPiUS (Peaks Using SQLite)
 ==========================
 Getting peak concurrent event counts, a.k.a peak usage,
